@@ -1,0 +1,653 @@
+/* =========================================
+   1. RESET & VARIABLES GLOBALES
+   ========================================= */
+:root {
+    /* COLORES DE MARCA (DENTAL TECH) */
+    --primary-cyan: #00f2ff; /* Cyan Clínico Brillante */
+    --secondary-blue: #0077b6;
+    --accent-purple: #7b2cbf;
+    --text-main: #ffffff;
+    --text-muted: #94a3b8;
+    --bg-dark: #050510;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --border-color: rgba(255, 255, 255, 0.1);
+    
+    /* COLORES WHATSAPP DARK MODIFICADOS */
+    --wp-bg: #0b141a;
+    --wp-header: #202c33;
+    --wp-msg-bot: #202c33;   
+    --wp-msg-user: var(--primary-cyan); /* User usa el color de marca */
+    --wp-text-user: #000;
+
+    --font-main: 'Inter', sans-serif;
+    --font-display: 'Space Grotesk', sans-serif;
+}
+
+* {
+    margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth;
+}
+
+html, body {
+    width: 100%; min-height: 100vh; overflow-x: hidden;
+    background-color: var(--bg-dark); color: var(--text-main); font-family: var(--font-main);
+}
+
+/* Fondo Animado */
+/* --- CAPA 1: CANVAS (FONDO ANIMADO) --- */
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    display: block;
+    background: radial-gradient(circle at center, #1a1c29 0%, #000000 100%);
+}
+
+/* --- CAPA 2: CONTENIDO --- */
+.app-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto !important;
+    overflow: visible !important;
+    padding-bottom: 100px;
+}
+
+.app-container {
+    position: relative; z-index: 1; width: 100%; max-width: 1300px; margin: 0 auto; padding: 0 20px;
+}
+
+/* =========================================
+   2. HEADER FINAL (Con Máscara de Fusión)
+   ========================================= */
+
+header {
+    display: flex;
+    justify-content: flex-end; /* Botón a la derecha */
+    align-items: center;
+    padding: 0 5%;
+    
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    
+    /* ALTURA GRANDE */
+    height: 180px; 
+    z-index: 1000;
+
+    /* FONDO NEBULA VIOLETA */
+    /* Centro negro (detrás del logo) -> Violeta -> Transparente */
+    background: radial-gradient(
+        ellipse at top center, 
+        #000000 30%,              
+        rgba(138, 43, 226, 0.45) 60%, 
+        transparent 95%           
+    );
+
+    border: none;
+    box-shadow: none; 
+    backdrop-filter: blur(4px);
+}
+
+/* WRAPPER DEL LOGO */
+.logo-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    
+    /* Ancho amplio para que la máscara no corte antes de tiempo */
+    width: 400px; 
+    height: 100%;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    background: transparent;
+    z-index: 10;
+}
+
+/* IMAGEN DEL LOGO (Efecto Máscara Fuerte) */
+.logo-img-main {
+    height: 100%;  
+    width: auto;   
+    max-width: 100%;
+    object-fit: contain;
+
+    /* 1. MÁSCARA MÁS AGRESIVA */
+    /* Antes empezaba en 50%, ahora en 30%. El desvanecimiento es mucho más notable. */
+    -webkit-mask-image: radial-gradient(
+        ellipse at center, 
+        black 30%,           /* Solo el centro (30%) es totalmente sólido */
+        rgba(0,0,0,0.6) 55%, /* A mitad de camino ya es muy transparente */
+        transparent 85%      /* Los bordes desaparecen por completo antes de llegar al final */
+    );
+    mask-image: radial-gradient(
+        ellipse at center, 
+        black 30%, 
+        rgba(0,0,0,0.6) 55%, 
+        transparent 85%
+    );
+
+    /* 2. FUSIÓN Y LIMPIEZA */
+    mix-blend-mode: screen; 
+    border: none;
+    border-radius: 0;
+    
+    /* 3. BRILLO NEÓN INTENSO (Compensa la transparencia) */
+    filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.8)) 
+            drop-shadow(0 0 40px rgba(138, 43, 226, 0.6));
+    
+    /* Animación */
+    animation: energy-pulse 4s ease-in-out infinite;
+    transition: transform 0.4s ease, -webkit-mask-image 0.4s ease;
+}
+
+/* Animación Respiración */
+@keyframes energy-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.95; }
+    50% { transform: scale(1.02); opacity: 1; }
+}
+
+/* BOTÓN LOGIN */
+.nav-btn {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--primary-cyan);
+    color: var(--primary-cyan);
+    padding: 10px 28px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    transition: 0.3s;
+    backdrop-filter: blur(4px);
+}
+
+.nav-btn:hover {
+    background: var(--primary-cyan);
+    color: #000;
+    box-shadow: 0 0 20px var(--primary-cyan);
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    header { height: 140px; }
+    .logo-img-main { height: 100%; }
+}
+
+@media (max-width: 600px) {
+    header { 
+        height: 100px; 
+        background: radial-gradient(
+            ellipse at top center, 
+            #000000 40%, 
+            rgba(138, 43, 226, 0.4) 80%, 
+            transparent 100%
+        );
+    }
+    .logo-wrapper { width: 200px; }
+    .logo-img-main { height: 100%; }
+}
+
+/* BOTÓN LOGIN (Flotando a la derecha) */
+.nav-btn {
+    background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para leerse */
+    border: 1px solid var(--primary-cyan);
+    color: var(--primary-cyan);
+    padding: 10px 30px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    transition: 0.3s;
+    backdrop-filter: blur(5px);
+}
+
+.nav-btn:hover {
+    background: var(--primary-cyan);
+    color: #000;
+    box-shadow: 0 0 20px var(--primary-cyan);
+}
+
+/* Ajuste Móvil */
+@media (max-width: 768px) {
+    header { height: 120px; }
+    .logo-img-main { height: 100px; }
+    /* En móvil oscurecemos un poco más el fondo para leer el menú */
+    header {
+        background: radial-gradient(
+            ellipse at top center, 
+            #000000 30%, 
+            rgba(138, 43, 226, 0.2) 70%, 
+            transparent 100%
+        );
+    }
+}
+
+.nav-btn {
+    color: var(--primary-cyan); text-decoration: none; padding: 8px 20px; border: 1px solid var(--primary-cyan);
+    border-radius: 50px; font-size: 0.9rem; font-weight: 600; transition: 0.3s;
+}
+.nav-btn:hover { background: var(--primary-cyan); color: #000; box-shadow: 0 0 20px var(--primary-cyan); }
+
+/* =========================================
+   3. HERO SECTION (DENTAL)
+   ========================================= */
+.hero {
+    min-height: 90vh; display: flex; align-items: center; padding-top: 200px; position: relative;
+}
+
+.hero-grid {
+    display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center; width: 100%;
+}
+
+.badge {
+    display: inline-block; background: rgba(0, 242, 255, 0.1); color: var(--primary-cyan);
+    padding: 6px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: 700;
+    border: 1px solid rgba(0, 242, 255, 0.3); margin-bottom: 25px; letter-spacing: 1px;
+}
+
+h1.typewriter-container {
+    font-family: var(--font-display); font-size: clamp(1rem, 2.5vw, 2.5rem);
+    line-height: 1.1; margin-bottom: 20px; color: #fff; min-height: 140px; display: block;
+}
+#typewriter-text { color: #fff; }
+.cursor { display: inline-block; color: var(--primary-cyan); animation: blink 1s step-end infinite; }
+
+h2 {
+    font-family: var(--font-main); font-size: 1.1rem; color: var(--text-muted);
+    margin-bottom: 40px; font-weight: 300; line-height: 1.6; max-width: 90%;
+}
+
+.highlight-gradient {
+    background: linear-gradient(90deg, var(--primary-cyan), #00aaff);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700;
+}
+
+/* CTA Buttons */
+.cta-group { display: flex; gap: 15px; flex-wrap: wrap; }
+
+.btn-primary {
+    background: var(--primary-cyan); color: #000; padding: 14px 28px; border-radius: 10px;
+    text-decoration: none; font-weight: 800; display: inline-flex; align-items: center; gap: 8px;
+    transition: 0.3s; border: none; cursor: pointer; font-size: 1rem;
+}
+.btn-primary:hover { box-shadow: 0 0 25px rgba(0, 242, 255, 0.6); transform: translateY(-3px); }
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px; padding: 10px 20px; text-decoration: none; display: flex; flex-direction: column;
+    justify-content: center; transition: 0.3s; color: #fff; cursor: pointer; min-width: 180px;
+}
+.btn-secondary:hover { border-color: var(--primary-cyan); background: rgba(0, 242, 255, 0.05); }
+.btn-text { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; }
+.file-support { display: flex; gap: 10px; font-size: 0.7rem; color: var(--text-muted); }
+.dot { width: 6px; height: 6px; background: var(--primary-cyan); border-radius: 50%; display: inline-block; }
+
+/* =========================================
+   4. HERO VISUAL (CHAT 3D)
+   ========================================= */
+.hero-visual {
+    position: relative; height: 500px; display: flex; justify-content: center; align-items: center;
+    perspective: 1000px;
+}
+
+#chat-wrapper {
+    position: relative; width: 340px; height: 100%; z-index: 10;
+}
+
+.card-chat {
+    width: 100%; height: 90%; background-color: var(--wp-bg);
+    border-radius: 35px; border: 8px solid #1f2c34; overflow: hidden;
+    display: flex; flex-direction: column; box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+    transform: rotateY(-15deg); animation: floatChat 6s ease-in-out infinite;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.chat-header {
+    background-color: var(--wp-header); padding: 15px; display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.chat-avatar {
+    width: 40px; height: 40px; background: var(--primary-cyan); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+}
+.chat-avatar::after { content: '🦷'; } /* Icono Dental */
+
+.chat-body {
+    flex: 1; padding: 20px 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;
+    background-image: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png");
+    background-size: 300px; background-blend-mode: soft-light;
+}
+.chat-body::-webkit-scrollbar { width: 0; } /* Scroll oculto */
+
+.chat-message {
+    padding: 10px 14px; border-radius: 12px; max-width: 85%; font-size: 0.9rem; line-height: 1.4;
+    position: relative; animation: popIn 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.chat-message.bot { background: var(--wp-msg-bot); color: #fff; align-self: flex-start; border-bottom-left-radius: 2px; }
+.chat-message.user { background: var(--wp-msg-user); color: #000; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 500; }
+
+/* Decoración Flotante */
+.card-file {
+    position: absolute; left: -30px; top: 15%; width: 120px; height: 120px;
+    background: rgba(30, 30, 40, 0.9); border: 1px solid var(--border-color); border-radius: 15px;
+    display: flex; align-items: center; justify-content: center; font-size: 3rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: rotateY(20deg);
+    animation: float 6s ease-in-out infinite 1s; z-index: 5;
+}
+
+/* =========================================
+   5. MARQUEE & FEATURES (BENTO)
+   ========================================= */
+.tech-marquee {
+    background: #0b0d14; padding: 20px 0; overflow: hidden; position: relative; z-index: 2;
+    border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); margin: 60px 0;
+}
+.marquee-content { display: flex; gap: 60px; width: max-content; animation: scroll 40s linear infinite; }
+.marquee-content span {
+    font-family: var(--font-display); font-size: 1.2rem; font-weight: 700;
+    color: rgba(255,255,255,0.3); text-transform: uppercase;
+}
+
+.features-section { padding: 80px 0; }
+.section-header { text-align: center; margin-bottom: 60px; }
+.section-header h3 { color: var(--primary-cyan); font-size: 0.9rem; letter-spacing: 3px; margin-bottom: 10px; font-weight: 700; }
+.section-header h2 { font-family: var(--font-display); font-size: 2.5rem; color: #fff; }
+.text-highlight { color: var(--primary-cyan); }
+
+.bento-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px;
+}
+.bento-card {
+    background: rgba(20, 25, 35, 0.6); border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px; padding: 30px; display: flex; flex-direction: column; justify-content: space-between;
+    transition: 0.3s; backdrop-filter: blur(10px); min-height: 220px;
+}
+.bento-card:hover { transform: translateY(-5px); border-color: var(--primary-cyan); }
+
+.card-wide { grid-column: span 2; display: flex; flex-direction: row; align-items: center; }
+.card-icon { font-size: 2rem; margin-bottom: 15px; width: 50px; height: 50px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; border-radius: 12px; }
+.bento-card h4 { font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 10px; color: #fff; }
+.bento-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+
+.toggle-visual {
+    background: #0f172a; padding: 5px; border-radius: 30px; display: flex; align-items: center; gap: 10px; border: 1px solid var(--border-color);
+}
+.toggle-btn { font-size: 0.7rem; font-weight: bold; padding: 5px 10px; color: #555; }
+.toggle-btn.active { color: #000; background: var(--primary-cyan); border-radius: 20px; }
+
+/* =========================================
+   6. PRICING (4 CARDS)
+   ========================================= */
+.pricing-section { padding: 80px 0; }
+.pricing-toggle { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 50px; margin-top: 20px; }
+.currency-label.active { color: #fff; font-weight: bold; text-shadow: 0 0 10px var(--primary-cyan); }
+
+/* Switch */
+.switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #2a2a35; transition: .4s; border-radius: 34px; border: 1px solid rgba(255,255,255,0.2); }
+.slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+input:checked + .slider { background-color: var(--primary-cyan); }
+input:checked + .slider:before { transform: translateX(24px); }
+
+.pricing-container {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;
+}
+
+.pricing-card {
+    flex: 1 1 250px; max-width: 300px;
+    background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px; padding: 30px 20px; display: flex; flex-direction: column;
+    position: relative; transition: 0.3s; backdrop-filter: blur(10px);
+}
+.pricing-card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.3); z-index: 10; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+
+/* Destacada */
+.pricing-card.featured {
+    background: linear-gradient(160deg, rgba(30, 41, 59, 0.9) 0%, rgba(0, 242, 255, 0.1) 100%);
+    border: 1px solid var(--primary-cyan); box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+    transform: scale(1.05); z-index: 2;
+}
+.pricing-card.featured:hover { transform: scale(1.05) translateY(-10px); }
+
+.popular-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--primary-cyan); color: #000; padding: 4px 12px; border-radius: 20px;
+    font-size: 0.7rem; font-weight: 800; text-transform: uppercase;
+}
+
+.plan-name { font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 10px; text-align: center; font-weight: 700; }
+.plan-price { display: flex; justify-content: center; align-items: baseline; margin-bottom: 5px; color: #fff; }
+.currency-symbol { font-size: 1.2rem; color: var(--text-muted); }
+.amount { font-size: 2rem; font-weight: 800; }
+.period { font-size: 0.85rem; color: var(--text-muted); margin-left: 5px; }
+.plan-desc { text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; font-style: italic; min-height: 35px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
+.item-limit { background: rgba(255,255,255,0.05); color: var(--primary-cyan); text-align: center; padding: 8px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; margin-bottom: 20px; }
+
+.plan-features { list-style: none; margin-bottom: 25px; flex: 1; padding: 0; }
+.compact-list li { display: flex; gap: 8px; font-size: 0.85rem; color: #e2e8f0; margin-bottom: 8px; align-items: center; }
+.compact-list li.disabled { opacity: 0.5; text-decoration: line-through; }
+
+.full-width { width: 100%; }
+
+/* Add-ons (Catalog) */
+.catalog-details { margin-top: 60px; background: rgba(255,255,255,0.02); padding: 40px; border-radius: 20px; border: 1px dashed var(--border-color); }
+.catalog-header { text-align: center; margin-bottom: 30px; }
+.catalog-header h4 { font-size: 1.4rem; color: var(--primary-cyan); margin-bottom: 10px; }
+.catalog-intro { max-width: 700px; margin: 0 auto 20px; color: var(--text-muted); font-size: 0.9rem; }
+.requirements-box { background: rgba(0, 242, 255, 0.05); border: 1px dashed var(--primary-cyan); padding: 15px; border-radius: 10px; display: inline-flex; align-items: center; gap: 10px; color: var(--primary-cyan); font-size: 0.9rem; }
+
+.packs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 30px; }
+.pack-item { background: var(--card-bg); border: 1px solid var(--border-color); padding: 25px 20px; border-radius: 15px; text-align: center; position: relative; transition: 0.3s; }
+.pack-item:hover { transform: translateY(-5px); border-color: var(--primary-cyan); }
+.pack-item.featured-pack { border-color: var(--primary-cyan); background: rgba(0, 242, 255, 0.05); }
+.pack-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--primary-cyan); color: #000; padding: 2px 10px; font-size: 0.7rem; border-radius: 10px; font-weight: bold; }
+.pack-title { font-weight: 700; margin-bottom: 5px; color: #fff; }
+.pack-features { list-style: none; font-size: 0.8rem; color: var(--text-muted); margin-top: 15px; text-align: left; }
+.small-note { text-align: center; font-size: 0.75rem; color: #64748b; margin-top: 20px; font-style: italic; }
+
+/* =========================================
+   7. TESTIMONIOS & FAQ
+   ========================================= */
+.testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+.testi-card { background: var(--card-bg); padding: 25px; border-radius: 16px; border: 1px solid var(--border-color); }
+.testi-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+.avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #000; }
+.user-name { font-weight: bold; font-size: 0.95rem; }
+.user-role { font-size: 0.75rem; color: var(--text-muted); }
+.stars { margin-left: auto; color: #FFD700; }
+
+.faq-section { padding: 80px 0; max-width: 800px; margin: 0 auto; }
+.faq-container { display: flex; flex-direction: column; gap: 15px; }
+.faq-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; transition: 0.3s; }
+.faq-item[open] { border-color: var(--primary-cyan); background: rgba(0, 242, 255, 0.05); }
+summary { padding: 20px; cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; align-items: center; color: var(--primary-cyan); }
+summary::after { content: '+'; font-size: 1.5rem; }
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-content { padding: 0 20px 20px; color: var(--text-main); line-height: 1.6; font-size: 0.95rem; }
+
+/* =========================================
+   8. FOOTER & CTA FINAL
+   ========================================= */
+.final-cta { padding: 80px 0; display: flex; justify-content: center; position: relative; }
+.cta-content {
+    background: linear-gradient(135deg, rgba(0, 242, 255, 0.1), #050510); padding: 60px 40px; border-radius: 30px;
+    text-align: center; width: 100%; max-width: 900px; border: 1px solid rgba(255,255,255,0.2); 
+    box-shadow: 0 0 50px rgba(0, 242, 255, 0.1); position: relative; z-index: 2;
+}
+.cta-content h2 { font-size: 2.2rem; color: #fff; margin-bottom: 15px; font-family: var(--font-display); }
+.cta-glow { position: absolute; width: 300px; height: 300px; background: var(--primary-cyan); filter: blur(150px); opacity: 0.2; z-index: 1; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+.whatsapp-float { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background-color: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(37, 211, 102, 0.6); z-index: 1000; transition: transform 0.3s ease; }
+.whatsapp-float:hover { transform: scale(1.1); }
+.whatsapp-float img { width: 35px; height: 35px; }
+
+footer { text-align: center; padding: 50px 0; color: #666; font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 50px; }
+
+/* =========================================
+   9. RESPONSIVE (MEDIA QUERIES)
+   ========================================= */
+@media (max-width: 1024px) {
+    .pricing-container { max-width: 800px; }
+    .pricing-card { flex: 1 1 45%; max-width: 45%; }
+    .pricing-card.featured { transform: scale(1); }
+}
+
+@media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 60px; }
+    .hero-visual { height: 400px; transform: scale(0.9); margin-top: -20px; }
+    .hero-text { order: 1; }
+    .cta-group { justify-content: center; }
+    .bento-grid { grid-template-columns: 1fr; }
+    .card-wide { grid-column: auto; flex-direction: column; text-align: center; }
+    h1.typewriter-container { min-height: 120px; font-size: 2.5rem; }
+}
+
+@media (max-width: 768px) {
+    .pricing-container { flex-direction: column; align-items: center; }
+    .pricing-card { width: 100%; max-width: 100%; margin-bottom: 20px; }
+    .pricing-card.featured { order: -1; transform: scale(1); }
+    .packs-grid { grid-template-columns: 1fr; }
+    
+    .card-chat { border-width: 4px; border-radius: 20px; transform: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .hero-visual { transform: scale(0.8); margin-left: -5%; }
+    .card-file { display: none; } /* Ocultar decoración en móvil para limpiar */
+}
+
+/* =========================================
+   10. ANIMACIONES
+   ========================================= */
+@keyframes soft-float { 0% { transform: translateY(0); } 100% { transform: translateY(-5px); } }
+@keyframes core-pulse { 0% { opacity: 0.2; scale: 0.9; } 100% { opacity: 0.5; scale: 1.1; } }
+@keyframes float { 0%, 100% { transform: rotateY(20deg) translateY(0); } 50% { transform: rotateY(20deg) translateY(-10px); } }
+@keyframes floatChat { 0%, 100% { transform: rotateY(-15deg) translateY(0); } 50% { transform: rotateY(-15deg) translateY(-10px); } }
+@keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes popIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* =========================================
+   9. RESPONSIVE (MEDIA QUERIES) - CORREGIDO
+   ========================================= */
+
+/* --- TABLETS Y LAPTOPS PEQUEÑAS (1024px hacia abajo) --- */
+@media (max-width: 1024px) {
+    /* Ajustes generales de grillas */
+    .pricing-container { max-width: 800px; }
+    .pricing-card { flex: 1 1 45%; max-width: 45%; }
+    .pricing-card.featured { transform: scale(1); }
+    
+    /* Ajuste Header/Hero: Bajamos un poco más el Hero */
+    .hero { padding-top: 200px; } 
+}
+
+/* --- TABLETS (900px hacia abajo) --- */
+@media (max-width: 900px) {
+    /* 1. Ajuste Header */
+    header { height: 140px; }
+    .logo-img-main { height: 100%; }
+
+    /* 2. Ajuste Hero (Para que no se encime) */
+    /* Header mide 140px + 40px de aire = 180px */
+    .hero { padding-top: 180px; } 
+
+    /* Ajustes de contenido */
+    .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 60px; }
+    .hero-visual { height: 400px; transform: scale(0.9); margin-top: -20px; }
+    .hero-text { order: 1; } /* Texto abajo, visual arriba (opcional) o normal */
+    .cta-group { justify-content: center; }
+    
+    .bento-grid { grid-template-columns: 1fr; }
+    .card-wide { grid-column: auto; flex-direction: column; text-align: center; }
+    h1.typewriter-container { min-height: 120px; font-size: 2.5rem; }
+}
+
+/* --- TABLET PEQUEÑA / MÓVIL GRANDE (768px hacia abajo) --- */
+@media (max-width: 768px) {
+    /* 1. Ajuste Header */
+    header { 
+        height: 120px; 
+        /* Oscurecemos un poco el fondo para leer mejor */
+        background: radial-gradient(
+            ellipse at top center, 
+            #000000 30%, 
+            rgba(138, 43, 226, 0.25) 70%, 
+            transparent 100%
+        );
+    }
+
+    /* 2. Ajuste Hero */
+    .hero { padding-top: 160px; }
+
+    /* Contenido */
+    .pricing-container { flex-direction: column; align-items: center; }
+    .pricing-card { width: 100%; max-width: 100%; margin-bottom: 20px; }
+    .pricing-card.featured { order: -1; transform: scale(1); }
+    .packs-grid { grid-template-columns: 1fr; }
+    
+    .card-chat { border-width: 4px; border-radius: 20px; transform: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .hero-visual { transform: scale(0.8); margin-left: -5%; }
+    .card-file { display: none; }
+}
+
+/* --- MÓVIL (600px hacia abajo) - AQUÍ ARREGLAMOS LA SUPERPOSICIÓN --- */
+@media (max-width: 600px) {
+    /* 1. HEADER: Cambiamos la estrategia de distribución */
+    header { 
+        height: 100px; 
+        padding: 0 20px;
+        /* Usamos space-between para separar Logo (Izq) y Botón (Der) */
+        justify-content: space-between; 
+        
+        background: radial-gradient(
+            ellipse at top center, 
+            #000000 40%, 
+            rgba(138, 43, 226, 0.4) 80%, 
+            transparent 100%
+        );
+    }
+    
+    /* 2. LOGO: Quitamos la posición absoluta para que no choque */
+    .logo-wrapper { 
+        position: relative; /* Ya no flota en el centro ignorando a los demás */
+        left: auto; 
+        top: auto; 
+        transform: none; /* Quitamos el centrado forzado */
+        
+        width: auto; /* Que ocupe lo que necesite la imagen */
+        height: 100%;
+        max-width: 60%; /* Para dejarle espacio al botón */
+        
+        justify-content: flex-start; /* Alineado a la izquierda */
+    }
+    
+    .logo-img-main { 
+        height: 80%; /* Un pelín más chico para dar aire */
+        /* Ajustamos la máscara para que no corte el lado izquierdo ahora que está al borde */
+        -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%);
+        mask-image: linear-gradient(to right, black 80%, transparent 100%);
+    }
+
+    /* 3. BOTÓN: Ajuste de tamaño */
+    .nav-btn {
+        padding: 8px 14px;
+        font-size: 0.75rem;
+        white-space: nowrap; /* Que no se rompa el texto */
+    }
+
+    /* 4. HERO: Bajamos el contenido */
+    /* Header 100px + espacio extra */
+    .hero { 
+        padding-top: 140px; 
+        min-height: auto; /* Quitamos altura mínima forzada en móvil */
+        padding-bottom: 60px;
+    }
+    
+    /* Texto más chico en móvil */
+    h1.typewriter-container { font-size: 2rem; min-height: 100px; }
+}

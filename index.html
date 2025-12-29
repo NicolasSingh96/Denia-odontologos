@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DenIA Dental - Agenda Inteligente para Odontólogos</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <header>
+        <div class="logo-wrapper">
+            <div class="neural-effect"></div> 
+            <div class="lightning-bolts"></div> 
+            <img src="/assets/img/WhatsApp Image 2025-12-09 at 10.33.34.jpeg" alt="DenIA Dental" class="logo-img-main">
+        </div>
+
+        <div class="header-right">
+            <a href="login.html" class="nav-btn">Acceso Profesional</a>
+        </div>
+    </header>
+
+    <div class="app-container">
+
+        <section class="hero">
+            <div class="hero-grid">
+                
+                <div class="hero-text">
+                    <span class="badge">INTELIGENCIA ODONTOLÓGICA AUTOMATIZADA</span>
+                    
+                    <h1 class="typewriter-container">
+                        <span id="typewriter-text"></span><span class="cursor">|</span>
+                    </h1>
+                    
+                    <h2>
+                        ​Tu Secretaria ahora es DenIA, entrenada con <span class="highlight-gradient">IA de alta precisión</span> y sobre todo con <span class="highlight-gradient">criterio odontológico.</span> 
+                        <span class="highlight-gradient">DenIA</span> 
+                         agenda tus turnos con la duración exacta dependiendo el motivo de la consulta o procedimiento, sin que tú intervengas.
+                        <span class="highlight-gradient">Sin errores. Sin dejar espacios libres. Sin ausentismo y cancelaciones.</span>
+                    </h2>
+
+                    <div class="cta-group">
+                        <a href="#suscripcion" class="btn-primary">Automatizar mi Consultorio <span>→</span></a>
+                        
+                        <a href="#suscripcion" class="btn-secondary">
+                            <span class="btn-text">Ver Demo Interactiva</span>
+                            <div class="file-support">
+                                <span class="support-label">Gestiona:</span>
+                                <span><div class="dot"></div> Turnos</span>
+                                <span><div class="dot"></div> Recordatorios</span>
+                                <span><div class="dot"></div> Pagos</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    
+                    <div class="card-file" style="--rot: 20deg;">
+                        <div class="file-icon">🦷</div>
+                        <div class="line-deco"></div>
+                        <div class="line-deco"></div>
+                    </div>
+                    
+                    <div class="connection-beam"></div>
+
+                    <div id="chat-wrapper">
+                        <div class="card-chat" style="--rot: -20deg;">
+                            <div class="chat-header">
+                                <div class="chat-avatar"></div>
+                                Asistente Dental
+                            </div>
+                            <div class="chat-body" id="dynamic-chat"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <div class="tech-marquee">
+            <div class="marquee-content">
+                <span>Odontología General</span>
+                <span>Ortodoncia</span>
+                <span>Implantología</span>
+                <span>Endodoncia</span>
+                <span>Estética Dental</span>
+                <span>Odontopediatría</span>
+                <span>Cirugía Maxilofacial</span>
+                <span>Prótesis</span>
+                <span>Periodoncia</span>
+                <span>Urgencias 24hs</span>
+            </div>
+        </div>
+
+        <section class="features-section">
+            <div class="section-header">
+                <h3>EFICIENCIA CLÍNICA</h3>
+                <h2>Todo lo que tu consultorio necesita <br>para <span class="text-highlight">funcionar sin ti</span>.</h2>
+            </div>
+
+            <div class="bento-grid">
+                <div class="bento-card card-small">
+                    <div class="card-icon">🧠</div>
+                    <h4>Lógica de Tiempos Reales</h4>
+                    <p>Configura duraciones específicas: 90 min para brackets, 30 min para consultas. El bot nunca superpone pacientes.</p>
+                    <div class="visual-placeholder" style="background: linear-gradient(45deg, #00f0ff20, transparent);"></div>
+                </div>
+
+                <div class="bento-card card-small">
+                    <div class="card-icon">🌙</div>
+                    <h4>Agenda 24/7</h4>
+                    <p>Captura pacientes a las 2 AM o domingos. Tu recepción nunca duerme.</p>
+                </div>
+
+                <div class="bento-card card-small">
+                    <div class="card-icon">🛡️</div>
+                    <h4>Señas Anti-Ausentismo</h4>
+                    <p>Cobra la consulta o una seña por MercadoPago antes de confirmar el turno.</p>
+                </div>
+
+                <div class="bento-card card-wide">
+                    <div class="card-content">
+                        <div class="card-icon">📞</div>
+                        <h4>Derivación a Secretaria</h4>
+                        <p>Si el paciente tiene una consulta compleja o administrativa, la IA transfiere la charla a tu secretaria humana.</p>
+                    </div>
+                    <div class="toggle-visual">
+                        <div class="toggle-btn active">IA</div>
+                        <div class="toggle-line"></div>
+                        <div class="toggle-btn">HUMANO</div>
+                    </div>
+                </div>
+
+                <div class="bento-card card-small">
+                    <div class="card-icon"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #25D366;">
+                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                        </svg>
+                    </div>
+                    <h4>Interpretación de Síntomas</h4>
+                    <p>El paciente envía un audio diciendo "me duele la muela" y la IA lo clasifica como Urgencia.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="pricing-section" id="suscripcion">
+            <div class="section-header">
+                <h3>SUSCRIPCIÓN MENSUAL</h3>
+                <h2>Elige el plan para tu clínica</h2>
+                
+                <div class="pricing-toggle">
+                    <span class="currency-label active" id="label-ars">ARS 🇦🇷</span>
+                    <label class="switch">
+                        <input type="checkbox" id="currency-switch">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="currency-label" id="label-usd">USD 🇺🇸</span>
+                </div>
+            </div>
+
+            <div class="pricing-container">
+                    
+                <div class="pricing-card">
+                    <div class="plan-name">Residente (Prueba)</div>
+                    <div class="plan-price">
+                        <span class="currency-symbol">$</span>0
+                        <span class="period">/ 7 días</span>
+                    </div>
+                    <p class="plan-desc">Ideal para probar el sistema.</p>
+                    <div class="item-limit">Hasta 15 Turnos</div>
+                    
+                    <ul class="plan-features compact-list">
+                        <li><span>✅</span> IA de Agendamiento</li>
+                        <li><span>✅</span> Gestión de pacientes</li>
+                        <li class="disabled"><span>❌</span> Tiempos personalizados</li>
+                        <li class="disabled"><span>❌</span> Recordatorios WhatsApp</li>
+                        <li class="disabled"><span>❌</span> Reportes de ausentismo</li>
+                        <li class="disabled"><span>❌</span> Modificación de precios</li>
+                        <li class="disabled"><span>❌</span> Soporte prioritario</li>
+                        <li class="disabled"><span>❌</span> Derivación a secretaria</li>
+                        <li class="disabled"><span>❌</span> Cobro de señas</li>
+                    </ul>
+                    <a href="javascript:void(0)" class="btn-secondary full-width" onclick="selectPlan('gratis')">Probar Gratis</a>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="plan-name">Consultorio</div>
+                    <div class="plan-price" data-ars="15.000" data-usd="15">
+                        <span class="currency-symbol">$</span><span class="amount">15.000</span>
+                        <span class="period">/ mes</span>
+                    </div>
+                    <p class="plan-desc">Para profesionales independientes.</p>
+                    <div class="item-limit">Turnos Ilimitados</div>
+
+                    <ul class="plan-features compact-list">
+                        <li><span>✅</span> IA de Agendamiento</li>
+                        <li><span>✅</span> Gestión de pacientes</li>
+                        <li class="disabled"><span>❌</span> Entrenamiento IA personalizado</li>
+                        <li class="disabled"><span>❌</span> Multi-Profesional</li>
+                        <li><span>✅</span> <strong>Lógica de Tiempos (Endo vs Limpieza)</strong></li>
+                        <li><span>✅</span> Lista de Precios modificable</li>
+                        <li><span>✅</span> Soporte vía Tickets</li>
+                        <li class="disabled"><span>❌</span> Soporte personalizado</li>
+                        <li class="disabled"><span>❌</span> Onboarding asistido</li>
+                        <li><span>✅</span> Cobro de señas (MercadoPago)</li>
+                    </ul>
+                    <a href="javascript:void(0)" class="btn-primary full-width" onclick="selectPlan('inicial')">Elegir Consultorio</a>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="popular-badge">MÁS ELEGIDO</div>
+                    <div class="plan-name">Clínica</div>
+                    <div class="plan-price" data-ars="30.000" data-usd="30">
+                        <span class="currency-symbol">$</span><span class="amount">30.000</span>
+                        <span class="period">/ mes</span>
+                    </div>
+                    <p class="plan-desc">Para centros con varios sillones.</p>
+                    <div class="item-limit">Multi-Profesional</div>
+
+                    <ul class="plan-features compact-list">
+                        <li><span>✅</span> IA de Agendamiento Avanzada</li>
+                        <li><span>✅</span> Gestión de pacientes</li>
+                        <li class="disabled"><span>❌</span> Entrenamiento IA personalizado</li>
+                        <li><span>✅</span> <strong>Gestión de Múltiples Agendas</strong></li>
+                        <li><span>✅</span> Reportes de facturación</li>
+                        <li><span>✅</span> Lista de Precios modificable</li>
+                        <li><span>✅</span> Soporte vía Tickets</li>
+                        <li class="disabled"><span>❌</span> Soporte personalizado</li>
+                        <li><span>✅</span> Derivación a secretaria (Handoff)</li>
+                        <li><span>✅</span> Onboarding asistido</li>
+                        <li><span>✅</span> Cobro de señas integrado</li>
+                    </ul>
+                    <a href="javascript:void(0)" class="btn-primary full-width" onclick="selectPlan('desarrollo')">Elegir Clínica</a>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="plan-name">Red Dental</div>
+                    <div class="plan-price">
+                        Cotizar
+                    </div>
+                    <p class="plan-desc">Obras Sociales y Grandes Redes.</p>
+                    <div class="item-limit">Sillones Ilimitados</div>
+
+                    <ul class="plan-features compact-list">
+                        <li><span>✅</span> IA Avanzada</li>
+                        <li><span>✅</span> Gestión de pacientes</li>
+                        <li><span>✅</span> <strong>Integración con CRM/ERP</strong></li>
+                        <li><span>✅</span> Gestión Centralizada</li>
+                        <li><span>✅</span> Reportes avanzados</li>
+                        <li><span>✅</span> API Propia</li>
+                        <li><span>✅</span> Soporte 24/7</li>
+                        <li><span>✅</span> <strong>Soporte dedicado</strong></li>
+                        <li><span>✅</span> Derivación a Call Center</li>
+                        <li><span>✅</span> Onboarding presencial/zoom</li>
+                        <li><span>✅</span> Cobro integrado</li>
+                    </ul>
+                    <a href="javascript:void(0)" class="btn-secondary full-width" onclick="selectPlan('medida')">Contactar Ventas</a>
+                </div>
+            </div>
+
+            <div class="catalog-details">
+                <div class="catalog-header">
+                    <h4>⚙️ Configuración Inicial de Protocolos (Opcional)</h4>
+                    <p class="catalog-intro">
+                        ¿No tienes tiempo para configurar los tiempos de cada tratamiento? 
+                        Nosotros cargamos tus protocolos clínicos. 
+                        Ejemplo: <em>"Extracción simple = 30 min", "Extracción compleja = 60 min"</em>.
+                        Este es un servicio <strong>adicional opcional</strong>.
+                    </p>
+                    
+                    <div class="requirements-box">
+                        <span class="req-icon">📋</span>
+                        <span class="req-text"><strong>Requisito:</strong> Solo envíanos tu lista de precios y tiempos estimados por tratamiento (Excel/PDF).</span>
+                    </div>
+                </div>
+
+                <div class="packs-grid">
+                    <div class="pack-item">
+                        <div class="pack-badge">Básico</div>
+                        <div class="pack-title">Configuración Simple</div>
+                        <div class="pack-price plan-price" data-ars="20.000" data-usd="20">
+                            <span class="currency-symbol">$</span><span class="amount">20.000</span>
+                        </div>
+                        <ul class="pack-features">
+                            <li>⏱️ Entrega: <strong>48 hs hábiles</strong></li>
+                            <li>⚙️ Carga de hasta 20 tratamientos</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="pack-item featured-pack">
+                        <div class="pack-badge">Recomendado</div>
+                        <div class="pack-title">Configuración Pro</div>
+                        <div class="pack-price plan-price" data-ars="50.000" data-usd="50">
+                            <span class="currency-symbol">$</span><span class="amount">50.000</span>
+                        </div>
+                        <ul class="pack-features">
+                            <li>⏱️ Entrega: <strong>72 hs hábiles</strong></li>
+                            <li>⚙️ Carga de agenda completa</li>
+                            <li>⚙️ Reglas complejas (etapas)</li>
+                        </ul>
+                    </div>
+
+                    <div class="pack-item">
+                        <div class="pack-badge">Full</div>
+                        <div class="pack-title">Migración Total</div>
+                        <div class="pack-price plan-price" data-ars="150.000" data-usd="150">
+                            <span class="currency-symbol">$</span><span class="amount">150.000</span>
+                        </div>
+                        <ul class="pack-features">
+                            <li>⏱️ Entrega: <strong>5 días hábiles</strong></li>
+                            <li>⚙️ Migración de pacientes</li>
+                            <li>⚙️ Configuración multi-profesional</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <p class="small-note">
+                    La configuración incluye la parametrización del bot para que respete estrictamente los tiempos clínicos indicados por el profesional.
+                </p>
+            </div>
+        </section>
+
+        <section class="testimonials-section">
+            <div class="section-header">
+                <h3>CLÍNICAS MODERNAS</h3>
+                <h2>Lo que dicen nuestros <span class="text-highlight">colegas</span>.</h2>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testi-card">
+                    <div class="testi-header">
+                        <div class="avatar" style="background: #00f0ff;">DR</div>
+                        <div>
+                            <div class="user-name">Dr. Ramiro G.</div>
+                            <div class="user-role">Implantólogo</div>
+                        </div>
+                        <div class="stars">★★★★★</div>
+                    </div>
+                    <p>"Mis pacientes de implantes requieren 90 minutos de sillón. DenIA lo respeta perfecto y llena los huecos con consultas breves."</p>
+                </div>
+
+                <div class="testi-card">
+                    <div class="testi-header">
+                        <div class="avatar" style="background: #8a2be2;">LC</div>
+                        <div>
+                            <div class="user-name">Dra. Lucía C.</div>
+                            <div class="user-role">Ortodoncia y Estética</div>
+                        </div>
+                        <div class="stars">★★★★★</div>
+                    </div>
+                    <p>"El sistema de señas eliminó mi ausentismo. Si el paciente no paga la reserva por WhatsApp, el turno se libera solo."</p>
+                </div>
+
+                <div class="testi-card">
+                    <div class="testi-header">
+                        <div class="avatar" style="background: #ff0055;">CM</div>
+                        <div>
+                            <div class="user-name">Clínica Modelo</div>
+                            <div class="user-role">Centro Odontológico</div>
+                        </div>
+                        <div class="stars">★★★★★</div>
+                    </div>
+                    <p>"Gestionamos 4 consultorios simultáneos. La IA deriva urgencias y organiza la agenda de todos los especialistas."</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="final-cta">
+            <div class="cta-content">
+                <h2>¿Listo para dejar de perder horas sillón?</h2>
+                <p>Tu agenda llena y organizada automáticamente. Prueba DenIA Dental hoy.</p>
+                <div class="cta-buttons">
+                    <a href="#suscripcion" class="btn-primary">Obtener mi Asistente Dental</a>
+                </div>
+            </div>
+            <div class="cta-glow"></div>
+        </section>
+
+        <section class="faq-section">
+            <div class="section-header">
+                <h2>Preguntas Frecuentes</h2>
+            </div>
+            
+            <div class="faq-container">
+                <details class="faq-item">
+                    <summary>¿Se conecta con mi Google Calendar?</summary>
+                    <div class="faq-content">
+                        <p>Sí, DenIA se sincroniza bidireccionalmente con Google Calendar. Si agendás algo manualmente, el bot lo ve y no ofrece ese horario.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>¿Qué pasa si un paciente cancela sobre la hora?</summary>
+                    <div class="faq-content">
+                        <p>El bot libera el turno inmediatamente y puede enviar un mensaje a tu "Lista de Espera" para intentar cubrir el hueco.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>¿El bot distingue una urgencia real?</summary>
+                    <div class="faq-content">
+                        <p>Sí. Está entrenado para detectar palabras clave como "dolor insoportable", "flemón" o "traumatismo" y priorizar esos turnos o derivar a guardia.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>¿Sirve para recordatorios de control semestral?</summary>
+                    <div class="faq-content">
+                        <p>Totalmente. Puedes configurar campañas de "Reactivación" para escribirle a pacientes que no vienen hace 6 meses.</p>
+                    </div>
+                </details>
+            </div>
+
+            <footer style="text-align:center; padding: 50px 0; color: #666; font-size: 0.8rem;">
+                <p>© 2025 DenIA Dental. Todos los derechos reservados.</p>
+            </footer>
+        </section>
+    </div>
+
+    <script src="/js/script.js"></script>
+    
+    <script>
+        // 1. Configuración del Efecto de Escritura (Typewriter)
+        const textElement = document.getElementById('typewriter-text');
+        const phrases = [
+            "Agenda Inteligente. Automatiza tus turnos por WhatsApp con asistente con IA especializada en Odontología...",
+        ];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function typeWriter() {
+            const currentPhrase = phrases[phraseIndex];
+            
+            if (isDeleting) {
+                textElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                textElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeSpeed = isDeleting ? 50 : 100;
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                typeSpeed = 2000; // Pausa al terminar frase
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typeSpeed = 500;
+            }
+
+            setTimeout(typeWriter, typeSpeed);
+        }
+
+        // 2. Simulación de Chat Dental en el Hero
+        const chatBody = document.getElementById('dynamic-chat');
+        const chatMessages = [
+            { sender: 'bot', text: 'Hola, soy el asistente del Dr. Pérez. ¿En qué puedo ayudarte?' },
+            { sender: 'user', text: 'Me duele mucho una muela 😫' },
+            { sender: 'bot', text: 'Entiendo. 🚨 Para dolor agudo tengo un hueco hoy a las 16:00 (30 min). ¿Te reservo?' },
+            { sender: 'user', text: 'Sí por favor.' },
+            { sender: 'bot', text: 'Listo. Te agendé. Recuerda traer tu DNI.' }
+        ];
+
+        function startChatAnimation() {
+            chatBody.innerHTML = '';
+            let delay = 0;
+
+            chatMessages.forEach((msg, index) => {
+                setTimeout(() => {
+                    const msgDiv = document.createElement('div');
+                    msgDiv.className = `chat-message ${msg.sender}`;
+                    msgDiv.innerHTML = msg.text; // Usamos innerHTML para emojis
+                    chatBody.appendChild(msgDiv);
+                    chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll
+                }, delay);
+                delay += 1500; // 1.5s entre mensajes
+            });
+
+            // Reiniciar chat cada cierto tiempo
+            setTimeout(startChatAnimation, delay + 3000);
+        }
+
+        // Iniciar animaciones al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            typeWriter();
+            startChatAnimation();
+        });
+
+        // 3. Lógica de Selección de Plan (Conectada con signup.js)
+        function selectPlan(planName) {
+            localStorage.setItem('deniaPlan', planName);
+            console.log("✅ Plan guardado en memoria:", planName);
+            setTimeout(() => {
+                window.location.href = 'signup.html';
+            }, 150);
+        }
+    </script>
+
+    <a href="https://wa.me/5491112345678?text=Hola%20DenIA%20Dental,%20quiero%20más%20info." class="whatsapp-float" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+    </a>
+
+</body>
+</html>
