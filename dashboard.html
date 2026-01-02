@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | DenIA Odontólogos</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        /* ================= ESTILOS CSS CORREGIDOS ================= */
+        :root {
+            --primary-cyan: #00f2ff;
+            --accent-purple: #8a2be2;
+            --bg-dark: #050510;
+            --sidebar-bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.6);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --sidebar-width: 280px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+
+        body {
+            background: radial-gradient(circle at top right, #1a1c29 0%, #050510 100%);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            display: flex; /* Clave para que sidebar y main estén lado a lado */
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- SIDEBAR (Menú Lateral Fijo) --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed; /* Fijo a la izquierda */
+            left: 0;
+            top: 0;
+            bottom: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            color: #fff;
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+        }
+
+        /* Tarjeta de Estado del Plan */
+        .plan-status-card {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        .status-header { display: flex; justify-content: space-between; font-size: 0.8rem; color: #ccc; margin-bottom: 5px; }
+        .plan-badge { 
+            background: var(--primary-cyan); color: #000; 
+            font-weight: bold; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; 
+            text-transform: uppercase;
+        }
+
+        /* Navegación */
+        .sidebar-menu { flex: 1; overflow-y: auto; }
+        .menu-label { font-size: 0.7rem; text-transform: uppercase; color: #64748b; margin: 20px 0 10px; font-weight: bold; letter-spacing: 1px; }
+
+        .menu-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 15px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: 0.2s;
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .menu-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .menu-item.active { 
+            background: rgba(0, 242, 255, 0.1); 
+            color: var(--primary-cyan); 
+            border-color: rgba(0, 242, 255, 0.3); 
+        }
+        
+        /* Estilo para items bloqueados */
+        .menu-item.locked { opacity: 0.5; cursor: not-allowed; }
+        .lock-icon { margin-left: auto; font-size: 0.8rem; }
+
+        .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border-color); }
+
+        /* --- MAIN CONTENT (Contenido Principal) --- */
+        .main-content {
+            margin-left: var(--sidebar-width); /* Empuja el contenido para no chocar con el menú */
+            width: calc(100% - var(--sidebar-width));
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .dash-header {
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 900;
+        }
+        .header-text h1 { font-family: 'Space Grotesk'; font-size: 1.5rem; margin-bottom: 5px; }
+        .header-text p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* --- PANELES Y TARJETAS --- */
+        .panel-section { 
+            padding: 40px; 
+            display: none; /* Oculto por defecto */
+        }
+        .panel-section.active { 
+            display: block; /* Solo el activo se ve */
+            animation: fadeIn 0.4s ease; 
+        }
+
+        .dash-grid { display: grid; gap: 30px; }
+        
+        .dash-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .card-header { 
+            padding: 20px; border-bottom: 1px solid var(--border-color); 
+            background: rgba(0,0,0,0.2); 
+        }
+        .card-header h3 { font-size: 1.1rem; color: #fff; }
+
+        .form-grid { 
+            padding: 25px; 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 20px; 
+        }
+
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        .input-group.full-width { grid-column: 1 / -1; }
+        .input-group label { color: var(--text-muted); font-size: 0.85rem; font-weight: 600; }
+        .input-group input, .input-group select, .input-group textarea { 
+            background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); 
+            color: #fff; padding: 12px; border-radius: 8px; font-family: 'Inter'; 
+            width: 100%;
+        }
+        .input-group input:focus { border-color: var(--primary-cyan); }
+
+        .btn-primary { 
+            background: var(--primary-cyan); color: #000; border: none; 
+            padding: 12px 24px; border-radius: 8px; font-weight: bold; 
+            cursor: pointer; transition: 0.3s; margin-top: 20px;
+        }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* Animación */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Ajuste Móvil */
+        @media (max-width: 900px) {
+            .sidebar { transform: translateX(-100%); transition: 0.3s; }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; width: 100%; }
+            .mobile-btn { display: block; position: fixed; bottom: 20px; right: 20px; z-index: 2000; background: var(--primary-cyan); border: none; width: 50px; height: 50px; border-radius: 50%; font-size: 1.5rem; }
+        }
+        .mobile-btn { display: none; }
+    </style>
+</head>
+<body>
+
+    <button class="mobile-btn" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span style="color: var(--primary-cyan);">Den</span>IA
+        </div>
+
+        <div class="plan-status-card">
+            <div class="status-header">
+                <span>Plan Actual</span>
+                <span id="badge-plan" class="plan-badge">CLINICA</span>
+            </div>
+            <div style="font-size: 0.75rem; color: #aaa; margin-top: 5px;">
+                Turnos Ilimitados
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="menu-label">Principal</div>
+            
+            <div class="menu-item active" id="btn-config" onclick="switchPanel('panel-config', this)">
+                <i class="fas fa-robot"></i> <span>Configurar Bot</span>
+            </div>
+            <div class="menu-item" id="btn-agenda" onclick="switchPanel('panel-agenda', this)">
+                <i class="fas fa-calendar-alt"></i> <span>Agenda</span>
+            </div>
+
+            <div class="menu-label">Gestión</div>
+            
+            <div class="menu-item" id="btn-pacientes" onclick="switchPanel('panel-pacientes', this)">
+                <i class="fas fa-user-injured"></i> <span>Pacientes</span>
+            </div>
+            
+            <div class="menu-label">Administración</div>
+            
+            <div class="menu-item" id="btn-finanzas" onclick="switchPanel('panel-finanzas', this)">
+                <i class="fas fa-chart-line"></i> <span>Finanzas</span>
+            </div>
+            <div class="menu-item" id="btn-equipo" onclick="switchPanel('panel-equipo', this)">
+                <i class="fas fa-user-md"></i> <span>Equipo</span>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="menu-item" onclick="window.location.href='login.html'" style="color: #ff4d4d;">
+                <i class="fas fa-sign-out-alt"></i> <span>Cerrar Sesión</span>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="dash-header">
+            <div class="header-text">
+                <h1 id="page-title">Configuración del Bot</h1>
+                <p>Bienvenido, <span id="user-name" style="color:var(--primary-cyan); font-weight:bold;">Doctor</span>.</p>
+            </div>
+        </header>
+
+        <div id="panel-config" class="panel-section active">
+            <form class="dash-grid" onsubmit="event.preventDefault(); alert('Guardado Correctamente');">
+                
+                <div class="dash-card">
+                    <div class="card-header"><h3>🏢 Identidad del Consultorio</h3></div>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>Nombre del Consultorio</label>
+                            <input type="text" placeholder="Ej: DentalSur">
+                        </div>
+                        <div class="input-group">
+                            <label>Especialidades</label>
+                            <input type="text" placeholder="Ortodoncia, Implantes">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dash-card">
+                    <div class="card-header"><h3>🧠 Cerebro (Reglas)</h3></div>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>Tono de Voz</label>
+                            <select><option>Empático</option><option>Formal</option></select>
+                        </div>
+                        <div class="input-group">
+                            <label>Atención Obras Sociales</label>
+                            <select><option>Solo Particulares</option><option>Mixto</option></select>
+                        </div>
+                        <div class="input-group full-width">
+                            <label>Prompt / Instrucciones Extra</label>
+                            <textarea rows="3" placeholder="Ej: No dar turnos a niños menores de 3 años..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dash-card">
+                    <div class="card-header"><h3>⏱️ Tiempos Clínicos</h3></div>
+                    <div class="form-grid">
+                        <div class="input-group full-width" style="text-align: center; border: 2px dashed #333; padding: 30px; border-radius: 10px;">
+                            <i class="fas fa-file-upload" style="font-size: 2rem; color: var(--primary-cyan); margin-bottom: 10px;"></i>
+                            <p>Arrastra aquí tu Excel de precios y tiempos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: right;">
+                    <button class="btn-primary">Guardar Configuración</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="panel-agenda" class="panel-section">
+            <div class="dash-card">
+                <div class="card-header"><h3>Agenda Semanal</h3></div>
+                <div style="padding: 40px; text-align: center; color: #888;">
+                    <i class="fas fa-calendar-alt" style="font-size: 3rem; margin-bottom: 10px;"></i>
+                    <p>Aquí se cargará el calendario interactivo.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="panel-pacientes" class="panel-section">
+            <div class="dash-card">
+                <div class="card-header">
+                    <h3>Base de Pacientes</h3>
+                    <button class="btn-primary" style="margin:0; font-size: 0.8rem;">+ Nuevo</button>
+                </div>
+                <div style="padding: 20px;">
+                    <table style="width: 100%; color: #fff; border-collapse: collapse;">
+                        <thead>
+                            <tr style="text-align: left; border-bottom: 1px solid #333; color: #888;">
+                                <th style="padding: 10px;">Nombre</th>
+                                <th>Tratamiento</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 15px 10px;">Juan Pérez</td>
+                                <td>Endodoncia</td>
+                                <td style="color: #00ff88;">Activo</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 15px 10px;">Maria Lopez</td>
+                                <td>Limpieza</td>
+                                <td style="color: #00ff88;">Activo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="panel-finanzas" class="panel-section">
+            <div class="dash-card">
+                <div class="card-header"><h3>Reporte Financiero</h3></div>
+                <div style="padding: 40px; text-align: center;">
+                    <h2 style="font-size: 3rem; color: #00ff88;">$ 1.250.000</h2>
+                    <p style="color: #888;">Facturación Octubre</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="panel-equipo" class="panel-section">
+            <div class="dash-card">
+                <div class="card-header"><h3>Equipo Médico</h3></div>
+                <div class="form-grid">
+                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; text-align: center;">
+                        <i class="fas fa-user-md" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                        <h4>Dr. Martín</h4>
+                        <p style="color: #888; font-size: 0.8rem;">Ortodoncia</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Simulación de Usuario (Para que no salga 'undefined')
+        document.addEventListener('DOMContentLoaded', () => {
+            const userName = localStorage.getItem('deniaUser') || 'Usuario';
+            document.getElementById('user-name').innerText = userName;
+
+            // FORZAR PLAN CLÍNICA PARA PRUEBAS (Desbloquea todo)
+            localStorage.setItem('deniaPlan', 'clinica');
+        });
+
+        // Función para cambiar de panel (Tabs)
+        function switchPanel(panelId, btnElement) {
+            // 1. Quitar clase active de todos los botones
+            document.querySelectorAll('.menu-item').forEach(btn => btn.classList.remove('active'));
+            
+            // 2. Ocultar todos los paneles
+            document.querySelectorAll('.panel-section').forEach(panel => panel.classList.remove('active'));
+
+            // 3. Activar el botón clickeado
+            btnElement.classList.add('active');
+
+            // 4. Mostrar el panel correspondiente
+            const targetPanel = document.getElementById(panelId);
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+            }
+
+            // 5. Actualizar título
+            const newTitle = btnElement.querySelector('span').innerText;
+            document.getElementById('page-title').innerText = newTitle;
+
+            // 6. Cerrar menú en móvil
+            if(window.innerWidth < 900) {
+                document.getElementById('sidebar').classList.remove('active');
+            }
+        }
+
+        // Toggle para móvil
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
